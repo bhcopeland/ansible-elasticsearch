@@ -1,4 +1,4 @@
-# ansible-elasticsearch
+asdsad# ansible-elasticsearch
 
 Ansible role for Elasticsearch.  Currently this works on Debian and RedHat based linux systems.  Tested platforms are:
 
@@ -14,7 +14,7 @@ The latest Elasticsearch versions of 1.7.x and 2.x are actively tested.  **Only 
 
 Create your Ansible playbook with your own tasks, and include the role elasticsearch.  You will have to have this repository accessible within the context of playbook, e.g.
 
-e.g. 
+e.g.
 
 ```
 cd /my/repos/
@@ -24,10 +24,10 @@ mkdir -p roles
 ln -s /my/repos/ansible-elasticsearch ./roles/elasticsearch
 ```
 
-Then create your playbook yaml adding the role elasticsearch.  By default, the user is only required to specify a unique es_instance_name per role application.  This should be unique per node. 
+Then create your playbook yaml adding the role elasticsearch.  By default, the user is only required to specify a unique es_instance_name per role application.  This should be unique per node.
 The application of the elasticsearch role results in the installation of a node on a host.
 
-The simplest configuration therefore consists of: 
+The simplest configuration therefore consists of:
 
 ```
 ---
@@ -44,7 +44,7 @@ This role also uses [Ansible tags](http://docs.ansible.com/ansible/playbooks_tag
 
 ### Basic Elasticsearch Configuration
 
-All Elasticsearch configuration parameters are supported.  This is achieved using a configuration map parameter 'es_config' which is serialized into the elasticsearch.yml file.  
+All Elasticsearch configuration parameters are supported.  This is achieved using a configuration map parameter 'es_config' which is serialized into the elasticsearch.yml file.
 The use of a map ensures the Ansible playbook does not need to be updated to reflect new/deprecated/plugin configuration parameters.
 
 In addition to the es_config map, several other parameters are supported for additional functions e.g. script installation.  These can be found in the role's defaults/main.yml file.
@@ -56,9 +56,9 @@ The following illustrates applying configuration parameters to an Elasticsearch 
   hosts: localhost
   roles:
     #expand to all available parameters
-    - { role: elasticsearch, es_instance_name: "node1", es_data_dirs: "/opt/elasticsearch/data", es_log_dir: "/opt/elasticsearch/logs", es_work_dir: "/opt/elasticsearch/temp", 
+    - { role: elasticsearch, es_instance_name: "node1", es_data_dirs: "/opt/elasticsearch/data", es_log_dir: "/opt/elasticsearch/logs", es_work_dir: "/opt/elasticsearch/temp",
     es_config: {
-        node.name: "node1", 
+        node.name: "node1",
         cluster.name: "custom-cluster",
         discovery.zen.ping.unicast.hosts: "localhost:9301",
         http.port: 9201,
@@ -66,7 +66,7 @@ The following illustrates applying configuration parameters to an Elasticsearch 
         node.data: false,
         node.master: true,
         bootstrap.mlockall: true,
-        discovery.zen.ping.multicast.enabled: false } 
+        discovery.zen.ping.multicast.enabled: false }
     }
   vars:
     es_scripts: false
@@ -76,15 +76,15 @@ The following illustrates applying configuration parameters to an Elasticsearch 
 ```
 `
 The role utilises Elasticsearch version defaults.  Multicast is therefore enabled for 1.x and disabled for 2.x (plugin required in 2.x).  If using 1.x it is strongly recommended you disable
-multicast and specify the required uni-cast settings for a production environment. 
+multicast and specify the required uni-cast settings for a production environment.
 When not utilizing multicast, the following should be set to ensure a successful cluster forms.
 
 * ```es_config['http.port']``` - the http port for the node
 * ```es_config['transport.tcp.port']``` - the transport port for the node
 * ```es_config['discovery.zen.ping.unicast.hosts']``` - the unicast discovery list, in the comma separated format ```"<host>:<port>,<host>:<port>"``` (typically the clusters dedicated masters)
-* ```es_config['network.host']``` - sets both network.bind_host and network.publish_host to the same host value. The network.bind_host setting allows to control the host different network components will bind on.  
+* ```es_config['network.host']``` - sets both network.bind_host and network.publish_host to the same host value. The network.bind_host setting allows to control the host different network components will bind on.
 
-The network.publish_host setting allows to control the host the node will publish itself within the cluster so other nodes will be able to connect to it. 
+The network.publish_host setting allows to control the host the node will publish itself within the cluster so other nodes will be able to connect to it.
 
 See https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html for further details on default binding behaviour and available options.
 The role makes no attempt to enforce the setting of these are requires users to specify them appropriately.  IT is recommended master nodes are listed and thus deployed first where possible.
@@ -97,17 +97,17 @@ A more complex example:
   hosts: localhost
   roles:
     #expand to all available parameters
-    - { role: elasticsearch, es_instance_name: "node1", es_data_dirs: "/opt/elasticsearch/data", es_log_dir: "/opt/elasticsearch/logs", es_work_dir: "/opt/elasticsearch/temp", 
+    - { role: elasticsearch, es_instance_name: "node1", es_data_dirs: "/opt/elasticsearch/data", es_log_dir: "/opt/elasticsearch/logs", es_work_dir: "/opt/elasticsearch/temp",
     es_config: {
-        node.name: "node1", 
-        cluster.name: "custom-cluster", 
-        discovery.zen.ping.unicast.hosts: "localhost:9301", 
-        http.port: 9201, 
-        transport.tcp.port: 9301, 
-        node.data: false, 
-        node.master: true, 
-        bootstrap.mlockall: true, 
-        discovery.zen.ping.multicast.enabled: false } 
+        node.name: "node1",
+        cluster.name: "custom-cluster",
+        discovery.zen.ping.unicast.hosts: "localhost:9301",
+        http.port: 9201,
+        transport.tcp.port: 9301,
+        node.data: false,
+        node.master: true,
+        bootstrap.mlockall: true,
+        discovery.zen.ping.multicast.enabled: false }
     }
   vars:
     es_scripts: false
@@ -130,9 +130,9 @@ A more complex example:
 
 ### Multi Node Server Installations
 
-The application of the elasticsearch role results in the installation of a node on a host. Specifying the role multiple times for a host therefore results in the installation of multiple nodes for the host. 
+The application of the elasticsearch role results in the installation of a node on a host. Specifying the role multiple times for a host therefore results in the installation of multiple nodes for the host.
 
-An example of a two server deployment, each with 1 node on one server and 2 nodes on another.  The first server holds the master and is thus declared first.  Whilst not mandatory, this is 
+An example of a two server deployment, each with 1 node on one server and 2 nodes on another.  The first server holds the master and is thus declared first.  Whilst not mandatory, this is
 recommended in any multi node cluster configuration.
 
 
@@ -162,7 +162,7 @@ recommended in any multi node cluster configuration.
 
 - hosts: data_nodes
   roles:
-    - { role: elasticsearch, es_instance_name: "node1", es_data_dirs: "/opt/elasticsearch", 
+    - { role: elasticsearch, es_instance_name: "node1", es_data_dirs: "/opt/elasticsearch",
     es_config: {
         "discovery.zen.ping.multicast.enabled": false,
         discovery.zen.ping.unicast.hosts: "elastic02:9300",
@@ -172,9 +172,9 @@ recommended in any multi node cluster configuration.
         node.master: false,
         bootstrap.mlockall: false,
         cluster.name: "test-cluster",
-        discovery.zen.ping.multicast.enabled: false } 
+        discovery.zen.ping.multicast.enabled: false }
     }
-    - { role: elasticsearch, es_instance_name: "node2", 
+    - { role: elasticsearch, es_instance_name: "node2",
     es_config: {
         "discovery.zen.ping.multicast.enabled": false,
         discovery.zen.ping.unicast.hosts: "elastic02:9300",
@@ -184,7 +184,7 @@ recommended in any multi node cluster configuration.
         node.master: false,
         bootstrap.mlockall: false,
         cluster.name: "test-cluster",
-        discovery.zen.ping.multicast.enabled: false } 
+        discovery.zen.ping.multicast.enabled: false }
     }
   vars:
     es_scripts: false
@@ -213,7 +213,7 @@ Additional parameters to es_config allow the customization of the Java and Elast
 Following variables affect the versions installed:
 
 * ```es_major_version``` (e.g. "1.5" ). Should be consistent with es_version. For versions >= 2.0 this must be "2.x".
-* ```es_version``` (e.g. "1.5.2").  
+* ```es_version``` (e.g. "1.5.2").
 * ```es_start_service``` (true (default) or false)
 * ```es_plugins_reinstall``` (true or false (default) )
 * ```es_plugins``` (an array of plugin definitions e.g.:
@@ -230,11 +230,11 @@ Following variables affect the versions installed:
 ```
 
 Earlier examples illustrate the installation of plugins for 2.x.  The correct use of this parameter varies depending on the version of Elasticsearch being installed:
- 
- - 2.x. - For officially supported plugins no version or source delimiter is required. The plugin script will determine the appropriate plugin version based on the target Elasticsearch version.  
+
+ - 2.x. - For officially supported plugins no version or source delimiter is required. The plugin script will determine the appropriate plugin version based on the target Elasticsearch version.
  For community based plugins include the full path e.g. "lmenezes/elasticsearch-kopf" and the appropriate version for the target version of Elasticsearch.
  - 1.x - Full path and version is required for both community and official plugins e.g. "elasticsearch/marvel"
- 
+
 If installing Marvel or Watcher, ensure the license plugin is also specified.  Shield configuration is currently not supported but planned for later versions.
 
 * ```es_user``` - defaults to elasticsearch.
@@ -242,7 +242,7 @@ If installing Marvel or Watcher, ensure the license plugin is also specified.  S
 * ```es_user_id``` - default is undefined.
 * ```es_group_id``` - default is undefined.
 
-Both ```es_user_id``` and ```es_group_id``` must be set for the user and group ids to be set. 
+Both ```es_user_id``` and ```es_group_id``` must be set for the user and group ids to be set.
 
 By default, each node on a host will be installed to use unique pid, plugin, work, data and log directories.  These directories are created, using the instance and host name, beneath default locations ]
 controlled by the following parameters:
@@ -253,7 +253,7 @@ controlled by the following parameters:
 * ```es_work_dir``` - defaults to "/tmp/elasticsearch".
 * ```es_plugin_dir``` - defaults to "/usr/share/elasticsearch/plugins".
 * ```es_restart_on_change``` - defaults to true.  If false, changes will not result in Elasticsearch being restarted.
-* ```es_plugins_reinstall``` - defaults to false.  If true, all currently installed plugins will be removed from a node.  Listed plugins will then be re-installed.  
+* ```es_plugins_reinstall``` - defaults to false.  If true, all currently installed plugins will be removed from a node.  Listed plugins will then be re-installed.
 
 This role ships with sample scripts and templates located in the [files/scripts/](files/scripts) and [files/templates/](files/templates) directories, respectively. These variables are used with the Ansible [with_fileglob](http://docs.ansible.com/ansible/playbooks_loops.html#id4) loop. When setting the globs, be sure to use an absolute path.
 * ```es_scripts_fileglob``` - defaults to `<role>/files/scripts/`.
@@ -284,8 +284,8 @@ To define proxy only for a particular plugin during its installation:
 * The playbook relies on the inventory_name of each host to ensure its directories are unique
 * Changing an instance_name for a role application will result in the installation of a new component.  The previous component will remain.
 * KitchenCI has been used for testing.  This is used to confirm images reach the correct state after a play is first applied.  We currently test only the latest version of each major release i.e. 1.7.3 and 2.1.0 on
-all supported platforms. 
-* The role aims to be idempotent.  Running the role multiple times, with no changes, should result in no state change on the server.  If the configuration is changed, these will be applied and 
+all supported platforms.
+* The role aims to be idempotent.  Running the role multiple times, with no changes, should result in no state change on the server.  If the configuration is changed, these will be applied and
 Elasticsearch restarted where required.
 * Systemd is used for Ubuntu versions >= 15, Debian >=8, Centos >=7.  All other versions use init for service scripts.
 
